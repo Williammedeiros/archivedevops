@@ -1,0 +1,251 @@
+Comandos Docker
+
+docker -a -i ID Container.
+
+docker container prune ( Exclui os containers inativos - Não usados)
+
+docker rmi (Nome da imagem para ser excluido).
+
+docker run -d (imagem)
+
+docker run -d -P (imagem) 
+
+docker port ID container
+
+docker stop -t 0 ID container (Forca o Stop do Container)
+
+docker run -d -P --name (nome ser utilizado no container) nome da image
+
+docker -d -p (8080:80 direciona a porta) nome do container
+
+docker run -d -P -e (AUTHOR="William M" uma variavel de ambiente no container) nome da image
+
+docker exec -it 98dc91bae443 bash (executa o container com o ID e o Bash)
+
+docker attach container_id ( Executa o Container - entra no container em start)
+
+docker start -ai container_id ( Start do container informando o ID)
+
+docker ps -q ( retorna os containers startados)
+docker stop -t 0 $(docker ps-q)
+
+docker run -v  ex:"/var/www" ubuntu (Cria um Volume )
+
+docker inspect ID container - Inspencionar o Container.
+
+no Docker executar o comando hostname -i para saber o IP do container
+
+instalar o ping dentro no container em execucao:
+apt-get update && apt-get install -y iputils-ping
+
+Criando um rede para Containers
+docker network create --driver bridge minha-rede(nome da rede)
+
+Criando o nome do container para dentro de uma rede.
+docker run -it --name meu-container --network minha-rede ubuntu 
+docker run -it --name my-container-ubuntu --network rede-will ubuntu
+
+Verificando a rede.
+docker network ls
+
+docker run -it -v "C:\User\Local\Desktop:/var/www " ubuntu ( Exemplo modo interativo com a criacao de Volume)
+
+criar txt e escrever nele exemplo para container.
+cd var/www 
+touch novoarquivo.txt
+echo "O volume do docker" > novoarquivo.txt
+
+For Mac Os
+docker run -it -v "/Users/williammedeirossilva/Desktop:/var/www" ubuntu
+
+docker run -d -p 8080:3000 -v "/Users/williammedeirossilva/Desktop/volume-exemplo:/var/www" -w "/var/www" node npm start
+
+pwd caminho da maquina:
+
+docker run -d -p 8080:3000 -v "$(pwd):/var/www" -w "/var/www" node npm start
+
+Comando executar o Dockerfile imagem NodeJs
+
+Criacao Dockerfile
+docker build -f Dockerfile -t williammedeiros/node .
+
+Executar a imagem DockerFile
+docker run -d -p 8000:3000 williammedeiros/node
+
+Docker criacao rede para MongoDB
+docker run -d --name meu-mongo --network rede-will mongo
+
+Docker criacao rede aplicacao NodeJs
+docker run --network rede-will -d -p 8000:3000 williammedeiros007/alura-books:cap05
+
+Inspecionar a rede 
+docker inspect rede-will
+
+docker exec -it alura-books-1 ping alura-books-2 ( para ping de um container para outro)
+docker exec -it alura-books-1 ping node2
+
+Docker Compose
+
+docker-compose build
+
+docker-compose up
+
+docker-compose up -d
+
+docker-compose ps
+
+docker-compose down (Stop e remove)
+
+
+_____________________________________________________________________________________
+
+Jenkins
+
+Triggers Builds.
+Dispare o build remotamente (1-opcao).
+
+Token Jenkins.
+openssl rand -base64 10
+1ysmifCPx7Prog==
+
+Build Script
+
+curl -XPOST -u "Williammedeiros:will210176" http://localhost:8080/job/Ruby-api/build\?token=1ysmifCPx7Prog
+
+
+Verificar Logs no Jenkins.
+
+cd /var/lib/jenkins
+
+ls -l
+
+ps aux | grep jenkins
+
+less ler arquivo .xml
+
+which jenkins
+
+
+------------------------------------------------------------------------------------------
+
+
+Instalar AWS CLI
+Instalar Phyton e o PIP
+
+Comando executar
+pip install aws
+
+Configurar AWS CLI com usuario Terraform
+
+AWS Access Key ID [****************TQQM]: xxxxxxxxxxxxxxxxxxx
+AWS Secret Access Key [****************xI8L]: xxxxxxxxxxxxxxxxxxxxx
+Default region name [us-east-1]:
+Default output format [None]:
+
+
+_---------------------------------------------------------------------------------------
+
+
+Terraform Comandos
+
+terraform init
+
+verificar onde ficou gravado o arquivo .tf  ls .terraform/plugins/darwin_amd64
+
+terraform plan
+
+terraform apply
+
+terraform show (verificar que foi criado.)
+
+terraform destroy (Deletar o projeto)
+
+terraform taint (recusro do bucket) aws_s3_bucket_object.object
+terraform plan
+terraform init
+
+volta anterior terraform untaint aws_s3_bucket_object.object
+
+Comando executado no CI
+terraform plan -var 'type=t2.micro'
+
+criado terraform dev.tfvars e prod.tfvars
+terraform plan -var-file="dev.tfvars"
+
+Versao 11 do Terraform mudar
+mv /Users/williammedeirossilva/Downloads/terraform  usr/local/bin/terraform
+
+
+-----------------------------------------------------------------------------------
+
+
+Git
+
+git tag (visualiza as tags)
+
+git checkout v0.1 (trocar de versoes)
+
+git diff v0.1 v0.2 (Saber o que mudou nos arquivos)
+
+git blame (Descobrir quem fez as alterações)
+
+Comandos para ser iniciar um projeto com GIT
+
+mkdir projeto (exemplo)
+cd projeto 
+git init
+
+git status
+git add . 
+git add nome do arquivo
+
+Git nao global (somente em maquina)
+git config user.name "William Silva"
+git config user.email "will@gmail.com"
+
+Git Global forma de baixar um projeto no Github GitLab
+git config --global user.name "William Silva"
+git config --global user.email "will@gmail.com"
+
+git commit -m "Início do projeto"
+
+git push -u origin master
+
+git log ( para ver no geral as mudancas)
+
+git whatchanged -p ( verifica as linhas que foram modificadas)
+
+git branch (nome de uma branch para criar) ex: novo
+
+git checkout (nome da branch para ser usado)
+
+git fetch origin (verifica atualizacoes no repositorio)
+
+git push origin desisn ( Compartilha seu repositorio)
+
+git push -u origin design
+
+git branch -r 
+
+Resolvendo Conflitos
+
+Pull master
+
+Criar uma branch 
+git checkout -b testerebase
+altera ou cria arquivos na branch
+
+Branch master (Volte nele e cria dois arquivos diferentes)
+
+git log para verificar
+
+git rebase master para aplicar os commits
+
+git log para verificar os commits que criou na master
+
+
+Desfazendo commits antigos
+
+git revert -n [hash_do_commit]
+
+----------------------------------------------------------------------
